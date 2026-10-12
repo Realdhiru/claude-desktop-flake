@@ -55,9 +55,12 @@ portal.
 
 ## Updating
 
-The source version and hash are pinned in `pkgs/claude-desktop.nix`. To update,
-read Anthropic's official APT package index, update `version` and `hash`, then
-build `.#claude-desktop` and `.#claude-desktop-cowork`.
+The source version, Debian filename, and SHA256 are pinned in
+`pkgs/claude-desktop.nix`. GitHub Actions checks Anthropic's official APT index
+every six hours and on manual dispatch. When a new version appears, it updates
+the pin, builds `.#claude-desktop`, and opens an auto-merge pull request. The
+build must succeed before the pull request is created. You can also run
+`scripts/update-claude.sh` locally to perform the same check and build.
 
 ## License
 
