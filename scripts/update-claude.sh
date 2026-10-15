@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
+trap 'status=$?; echo "ERROR: update-claude.sh failed at line $LINENO (exit $status)." >&2; exit "$status"' ERR
+
+command -v curl >/dev/null || { echo "curl is required." >&2; exit 1; }
+command -v gzip >/dev/null || { echo "gzip is required." >&2; exit 1; }
+command -v nix >/dev/null || { echo "nix is required." >&2; exit 1; }
 
 NIX_FILE="pkgs/claude-desktop.nix"
 INDEX_URL="https://downloads.claude.ai/claude-desktop/apt/stable/dists/stable/main/binary-amd64/Packages.gz"
@@ -13,13 +18,13 @@ latest="$(curl -fsSL "$INDEX_URL" | gzip -dc | awk '
       if ($i ~ /^SHA256: /)   { sub(/^SHA256: /, "", $i); hash = $i }
       if ($i ~ /^Filename: /) { sub(/^Filename: /, "", $i); filename = $i }
     }
-    if (version != "" && hash ~ /^[[:xdigit:]]{64}$/ && filename ~ /^pool\//)
+    if (version != "" && hash ~ /^[[:xdigit:]]+$/ && length(hash) == 64 && filename ~ /^pool\//)
       print version, hash, filename
   }
 ' | sort -V -k1,1 | tail -n 1)"
 
 read -r new_version new_hash filename <<< "$latest"
-if [[ ! "${new_version:-}" =~ ^[0-9]+(\.[0-9]+)+$ || ! "${new_hash:-}" =~ ^[[:xdigit:]]{64}$ || "${filename:-}" != "pool/main/c/claude-desktop/claude-desktop_${new_version}_amd64.deb" ]]; then
+if [[ ! "${new_version:-}" =~ ^[0-9]+(\.[0-9A-Za-z+~:-]+)*$ || ! "${new_hash:-}" =~ ^[[:xdigit:]]{64}$ || "${filename:-}" != "pool/main/c/claude-desktop/claude-desktop_${new_version}_amd64.deb" ]]; then
   echo "Could not parse latest Claude Desktop package metadata." >&2
   exit 1
 fi

@@ -59,8 +59,10 @@ The source version, Debian filename, and SHA256 are pinned in
 `pkgs/claude-desktop.nix`. GitHub Actions checks Anthropic's official APT index
 every six hours and on manual dispatch. When a new version appears, it updates
 the pin, builds `.#claude-desktop`, and opens an auto-merge pull request. The
-build must succeed before the pull request is created. You can also run
-`scripts/update-claude.sh` locally to perform the same check and build.
+build must succeed before the pull request is created. The updater validates
+the APT metadata, reports the failing command and line, and avoids overlapping
+scheduled runs. You can also run `scripts/update-claude.sh` locally to perform
+the same check and build.
 
 ## License
 
