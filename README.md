@@ -1,4 +1,4 @@
-# claude-flake
+# claude-desktop-flake
 
 Nix flake for Anthropic's official Claude Desktop Linux beta on NixOS. It
 downloads Anthropic's published Debian package, verifies its pinned SHA256,
@@ -11,7 +11,7 @@ repository contains packaging glue only and is not affiliated with Anthropic.
 ## Run
 
 ```sh
-nix run github:Realdhiru/claude-flake
+nix run github:Realdhiru/claude-desktop-flake
 ```
 
 ## Install on NixOS
@@ -20,7 +20,7 @@ Add the input and overlay to your flake:
 
 ```nix
 inputs.claude-desktop = {
-  url = "github:Realdhiru/claude-flake";
+  url = "github:Realdhiru/claude-desktop-flake";
   inputs.nixpkgs.follows = "nixpkgs";
 };
 ```
