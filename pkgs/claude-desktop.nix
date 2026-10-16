@@ -9,12 +9,12 @@
 }:
 
 let
-  version = "2.31226.1";
+  version = "2.42304.0";
   debFile = "pool/main/c/claude-desktop/claude-desktop_${version}_amd64.deb";
 
   src = fetchurl {
     url = "https://downloads.claude.ai/claude-desktop/apt/stable/${debFile}";
-    hash = "sha256-Wpvr38sd9s44dns3Pzp/q/dxVqLd2KP10Elh2lveMF4=";
+    hash = "sha256-dM0szCnSQWUUTkVcvIcsbMKiSiY7g+c0IOlfiRZtSqQ=";
   };
 
   unpacked = stdenv.mkDerivation {
